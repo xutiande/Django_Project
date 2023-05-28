@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}管理员列表{% endblock %}</title>
+</head>
+<body>
+{% block div %}
+
+    <div class="out-box">
+        <div class="container">
+            <div style="">
+                <a href="/admin/add/" class="btn btn-info ">新建管理员</a>
+
+                <div class="container-fluid" style="width: 300px;float: right">
+                    <form class="d-flex" role="search" method="get">
+                        <input class="form-control me-2" name="q" type="search" placeholder="搜索内容"
+                               value="{{ search_data }}" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit" style="">搜</button>
+                    </form>
+                </div>
+            </div>
+            <table class="table caption-top">
+                <div class="div-svg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-card-list" viewBox="0 0 16 16">
+                        <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+                        <path d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zM4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"/>
+                    </svg>
+                    管理员列表
+                </div>
+
+                <thead style="text-align: center">
+
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">用户名</th>
+                    <th scope="col">密码</th>
+                    <th scope="col">操作</th>
+                </tr>
+                </thead>
+                {% for queryset in queryset %}
+                    <tbody style="text-align: center">
+                    <tr>
+                        <th>{{ queryset.id }}</th>
+                        <td>{{ queryset.username }}</td>
+                        <td>******</td>
+                        <td>
+                            <a href="/admin/{{ queryset.id }}/reset/" class="btn btn-primary btn-xs">重置密码</a>
+                            <a href="/admin/{{ queryset.id }}/edit/" class="btn btn-primary btn-xs">编辑</a>
+                            <a href="/admin/{{ queryset.id }}/delete/" class="btn btn-danger btn-xs">删除</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
+        </div>
+        <div style="text-align: center;">
+            <nav aria-label="Page navigation example" style="display: inline-block">
+                <ul class="pagination" style="">
+                    {{ page_string }}
+                    <form class="d-flex" method="post">
+                        {% csrf_token %}
+                        <input class="form-control me-2" type="search" name='go_page'
+                               style="width:80px;margin-left: 10px">
+                        <button class="btn btn-outline-success" type="submit">Go</button>
+                    </form>
+                    <span style="font-size: 12px;padding: 18px 0 0 15px">共  <b> {{ all_count }}</b> 组数据</span>
+                </ul>
+            </nav>
+        </div>
+    </div>
+{% endblock %}
+</body>
+</html>

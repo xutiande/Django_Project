@@ -1,0 +1,20 @@
+.form-group {
+    margin-bottom: 10px;
+    text-align: center;
+    padding-left: 120px;
+    height: auto;
+}
+
+.form-group label {
+    float: left;
+    line-height: 37px;
+}
+
+.btn-address {
+    margin-left: 364px;
+}
+
+.col-sm-10 {
+    margin-bottom: 15px;
+    margin-top: 10px;
+}

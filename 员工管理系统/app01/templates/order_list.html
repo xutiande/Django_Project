@@ -1,0 +1,339 @@
+{% extends 'base.html' %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}订单列表{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/list.css' %}">
+    <style>
+
+    </style>
+</head>
+<body>
+{% block div %}
+    <div class="out-box">
+        <div class="container">
+            <div>
+                {#                <a href="/depart/add/" class="btn btn-info ">新建订单</a>#}
+                <input id="btnAdd" type="button" value="新建订单" class="btn btn-primary ">
+            </div>
+            <table class="table caption-top">
+                <div class="div-svg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-card-list" viewBox="0 0 16 16">
+                        <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+                        <path d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zM4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"/>
+                    </svg>
+                    订单列表
+                </div>
+
+                <thead style="text-align: center">
+
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">订单编号</th>
+                    <th scope="col">标题</th>
+                    <th scope="col">价格</th>
+                    <th scope="col">状态</th>
+                    <th scope="col">用户</th>
+
+                    <th scope="col">操作</th>
+
+                </tr>
+                </thead>
+                {% for querysets in queryset %}
+                    <tbody style="text-align: center">
+                    <tr>
+                        <th>{{ querysets.id }}</th>
+                        <td>{{ querysets.oid }}</td>
+                        <td>{{ querysets.title }}</td>
+                        <td>{{ querysets.price }}</td>
+                        <td>{{ querysets.get_status_display }}</td>
+                        <td>{{ querysets.admin.username }}</td>
+                        <td>
+                            <input uid="{{ querysets.id }}" type="button" class="btn btn-info btn-xs btn-edit"
+                                   value="编辑"
+                                   style="width: 60px;">
+                            <input uid="{{ querysets.id }}" type="button" class="btn btn-danger btn-xs btn-delete"
+                                   value="删除"
+                                   style="width: 60px;">
+                        </td>
+                    </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
+            <div style="text-align: center;">
+                <nav aria-label="Page navigation example" style="display: inline-block">
+                    <ul class="pagination" style="">
+                        {{ page_string }}
+                        <form class="d-flex" method="post">
+                            {% csrf_token %}
+                            <input class="form-control me-2" type="search" name='go_page'
+                                   style="width:80px;margin-left: 10px">
+                            <button class="btn btn-outline-success" type="submit">Go</button>
+                        </form>
+                        <span style="font-size: 12px;padding: 18px 0 0 15px">共  <b> {{ all_count }}</b> 组数据</span>
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- 新建对话框 -->
+            <div class="modal fade" id="myModel" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">添加</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" style="margin-right: 50px">
+                            <form id='formAdd' class="form-horizontal" novalidate>
+                                <div class="clearfix">
+                                    {% for field in form %}
+                                        <div class="form-group" style="padding-left: 20px">
+                                            <div class="form-input">
+                                                <label class="col-sm-2 control-label">{{ field.label }}</label>
+                                                <div class="col-sm-11" style="position: relative">
+                                                    {{ field }}
+                                                    <span class="errors-msg"
+                                                          style="color: red;font-weight:bold;font-size:10px;position: absolute;top: 6px;right: -42px;"></span>
+                                                </div>
+                                                <span style="color: #C00000;display: inline-block;width: 200px">{{ field.errors }}</span>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                            <button id='btnSave' type="button" class="btn btn-primary">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {#            删除对话框#}
+            <div class="modal fade" id="deleteModel" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">确认提示</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            删除后不可恢复！
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                            <button id="btnConfirmDelete" type="button" class="btn btn-primary">继续删除</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script src="{% static 'jquery/jquery.3.6.min.js' %}"></script>
+    <script type="text/javascript">
+        var DELETE_ID;
+        var EDIT_ID;
+        $(function () {
+            bindBtnAddEvent();
+            bindBtnSaveEvent();
+            bindBtnDeleteEvent();
+            bindBtnConfirmDeleteEvent();
+            bindBtnEditEvent();
+        })
+
+
+        {#提交事件#}
+
+        function bindBtnSaveEvent() {
+            console.log(EDIT_ID)
+            $("#btnSave").click(function () {
+                $(".errot-msg").empty();
+                if (EDIT_ID) {
+                    {#编辑#}
+                    toEdit()
+                } else {
+                    //添加
+                    toAdd()
+                }
+            });
+
+        }
+
+        {#新建对话框事件#}
+
+        function bindBtnAddEvent() {
+
+            $("#btnAdd").click(function () {
+                EDIT_ID = undefined;
+                $("#formAdd")[0].reset();
+                $("#exampleModalLabel").text('新建订单');
+                {##点击弹出对话框#}
+                $("#myModel").modal('show');
+            })
+        }
+
+        {#编辑事件#}
+
+        function toEdit() {
+            $.ajax({
+                url: "/order/edit/" + "?uid=" + EDIT_ID,
+                type: "post",
+                data: $("#formAdd").serialize(), //获取用户填写的数据
+                dataType: "JSON",    //处理返回的json数据
+                success: function (res) {
+                    {#console.log(res)#}
+                    if (res.status) {
+
+                        {#置空    $("#formAdd")[0]为jQuery对象+[0]为DOM对象，DOM对象有reset方法置空#}
+                        $("#formAdd")[0].reset();
+                        {#关闭对话框#}
+                        $("#myModel").modal('hide');
+                        {#刷新页面#}
+                        location.reload();
+                    } else {
+                        if (res.tips) {
+                            alert("数据不存在")
+                        } else {
+
+                            {#将错误信息用循环显示到对话框边#}
+                            {#循环res.error，得到name和errorList两个数据#}
+                            $.each(res.error, function (name, errorList) {
+                                $("#id_" + name).next().text(errorList[0]);
+                            })
+                        }
+
+                    }
+                }
+            })
+
+
+        }
+
+        {#添加事件#}
+
+        function toAdd() {
+            {#$("#btnSave").click(function () {#}
+            {#alert("保存");#}
+            {#location.reload();#}
+            {#每点击一次按钮清空一次错误信息#}
+            {#    $(".error-msg").empty();#}
+            {#发送ajax请求#}
+
+            $.ajax({
+                url: "/order/add/",
+                type: "post",
+                data: $("#formAdd").serialize(), //获取用户填写的数据
+                dataType: "JSON",    //处理返回的json数据
+                success: function (res) {
+                    {#console.log(res)#}
+                    if (res.status) {
+                        alert("成功！");
+                        {#置空    $("#formAdd")[0]为jQuery对象+[0]为DOM对象，DOM对象有reset方法置空#}
+                        $("#formAdd")[0].reset();
+                        {#关闭对话框#}
+                        $("#myModel").modal('hide');
+                        {#刷新页面#}
+                        location.reload();
+                    } else {
+
+                        {#将错误信息用循环显示到对话框边#}
+                        {#循环res.error，得到name和errorList两个数据#}
+                        $.each(res.error, function (name, errorList) {
+                            $("#id_" + name).next().text(errorList[0]);
+                        })
+
+                    }
+                }
+            })
+
+
+        }
+
+        {#删除事件#}
+
+        function bindBtnDeleteEvent() {
+            {#添加点击事件#}
+            $(".btn-delete").click(function () {
+                {#alert("点击了删除")#}
+                $("#deleteModel").modal("show")
+                //获取当前行的id并赋值给全局变量. 获取属性attr
+                DELETE_ID = $(this).attr("uid");
+            })
+        }
+
+        {#确认删除#}
+
+        function bindBtnConfirmDeleteEvent() {
+            $("#btnConfirmDelete").click(function () {
+                $.ajax({
+                    url: "/order/delete/",
+                    type: 'GET',
+                    data: {
+                        nid: DELETE_ID
+                    },
+                    dataType: "JSON",
+                    success: function (res) {
+                        {#console.log(res)#}
+                        if (res.status) {
+                            {#alert("删除成功!");#}
+                            {#刷新#}
+                            location.reload();
+                        } else {
+                            alert(res.error)
+                        }
+                    }
+                })
+            })
+        }
+
+        {#编辑订单#}
+
+        function bindBtnEditEvent() {
+            {#点击事件#}
+            $(".btn-edit").click(function () {
+                var uid = $(this).attr("uid");
+                EDIT_ID = uid;
+                $.ajax({
+                    url: "/order/detail/",
+                    type: "get",
+                    data: {
+                        uid: uid
+                    },
+                    dataType: "JSON",
+                    success: function (res) {
+                        if (res.status) {
+                            {#console.log(res.data)#}
+                            {#alert("获取成功")#}
+                            {#修改对话框的标题#}
+                            {#循环获取后端传过来的数据，并赋值到对话框中标签的id中#}
+                            $.each(res.data, function (name, value) {
+                                $("#id_" + name).val(value);
+                            })
+                            $("#exampleModalLabel").text('编辑订单');
+                            $("#myModel").modal('show');
+
+                        } else {
+                            alert(res.error)
+                        }
+                    }
+                })
+
+            })
+
+        }
+    </script>
+
+{% endblock %}
+</body>
+</html>

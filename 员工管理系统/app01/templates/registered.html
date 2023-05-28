@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>login</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+
+    <link rel="stylesheet" href="{% static 'css/login.css' %}" id="theme-stylesheet">
+    <link rel="stylesheet" href="{% static 'bootstrap-5.3.0/css/bootstrap.css' %}" id="theme-stylesheet">
+</head>
+<body>
+<div style="background: rgba(238,245,249)"><a href="/" class="btn-primary btn"
+                                              style="margin: 20px; background: rgb(73 142 181);">返回首页</a>
+</div>
+
+<div class="page login-page">
+
+    <div class="container d-flex align-items-center">
+        <div class="form-holder has-shadow">
+            <div class="row">
+                <!-- Logo & Information Panel-->
+                <div class="col-lg-6">
+                    <div class="info d-flex align-items-center" style=" background: rgb(73 142 181);">
+                        <div class="content">
+                            <div class="logo">
+                                <h1>注册</h1>
+                            </div>
+                            <p>员工管理系统</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Form Panel    -->
+                <div class="col-lg-6 bg-white">
+                    <div class="form d-flex align-items-center">
+                        <form action="" method="post" novalidate>
+                            {% csrf_token %}
+                            <div class="content">
+                                {% for field in form %}
+                                    <div class="form-group">
+                                        {{ field }}
+                                    </div>
+                                    <span class="input-span-li"
+                                          style="color: #C00000;display: block;float:right;width: 200px;margin-top: 8px;padding-left: 20px">{{ field.errors }}</span>
+                                {% endfor %}
+                                <div class="form-group" style=""
+                                <div class="col-xs-5">
+                                    <button id="login" type="submit" class="btn btn-primary"
+                                            style=" background: rgb(73 142 181);">登录
+                                    </button>
+                                    <img id="image_code" src="/image/code/" style="float: right">
+                                </div>
+                            </div>
+                            {% if form.errors %}
+                                <span class="input-span-li"
+                                      style="color: #C00000;display: block;float:right;width: 200px;margin-top: 8px;padding-left: 20px">请检查输入信息是否正确</span>
+                            {% endif %}
+
+                            <div style="margin-top: -40px;">
+                            </div>
+                            <br/>
+                            <br/>
+                            <small>已注册？</small><a href="/login/" class="signup">&nbsp;登录</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

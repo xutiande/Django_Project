@@ -1,0 +1,130 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>login</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+
+    <link rel="stylesheet" href="{% static 'css/login.css' %}" id="theme-stylesheet">
+    <link rel="stylesheet" href="{% static 'bootstrap-5.3.0/css/bootstrap.css' %}" id="theme-stylesheet">
+</head>
+<body>
+<div style="background: rgba(238,245,249)"><a href="" class="btn-primary btn"
+                                              style="margin: 20px; background: rgb(73 142 181);">返回首页</a>
+</div>
+
+<div class="page login-page">
+
+    <div class="container d-flex align-items-center">
+        <div class="form-holder has-shadow">
+            <div class="row">
+                <!-- Logo & Information Panel-->
+                <div class="col-lg-6">
+                    <div class="info d-flex align-items-center" style=" background: rgb(73 142 181);">
+                        <div class="content">
+                            <div class="logo">
+                                <h1>欢迎登录</h1>
+                            </div>
+                            <p>员工管理系统</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Form Panel    -->
+                <div class="col-lg-6 bg-white">
+                    <div class="form d-flex align-items-center">
+                        <form action="" method="post" novalidate>
+                            {% csrf_token %}
+                            <div class="content">
+                                {% for field in form %}
+                                    <div class="form-group">
+                                        {{ field }}
+                                    </div>
+
+                                {% endfor %}
+
+                                {##}
+                                {#                                    <div class="col-xs-7">#}
+                                {#                                                                                <input type="text" name="code" class="input-material"#}
+                                {#                                                                                       placeholder="图片验证码" required="" id="id_code"#}
+                                {#                                                                                >#}
+                                {#                                                                                <span style="color: red;"></span>#}
+                                {#                                    </div>#}
+                                <div class="form-group" style="">
+                                    <div class="col-xs-5">
+                                        <button id="login" type="submit" class="btn btn-primary"
+                                                style=" background: rgb(73 142 181);">登录
+                                        </button>
+                                        <img id="image_code" src="/image/code/" style="float: right">
+                                    </div>
+                                </div>
+                                {% if form.errors %}
+                                    <span class="input-span-li"
+                                          style="color: #C00000;display: block;float:right;width: 200px;margin-top: 8px;padding-left: 20px">请检查输入信息是否正确</span>
+                                {% endif %}
+
+                                <div style="margin-top: -40px;">
+                                </div>
+                                <br/>
+                                <br/>
+                                <small>没有账号?</small><a href="/registered/" class="signup">&nbsp;注册</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- JavaScript files-->
+{#    <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>#}
+{#    <script src="https://www.jq22.com/jquery/bootstrap-3.3.4.js"></script>#}
+{#    <script src="vendor/jquery-validation/jquery.validate.min.js"></script><!--表单验证-->#}
+{#    <!-- Main File-->#}
+{#    <script src="js/front.js"></script>#}
+{#    <script>#}
+{#        $(function () {#}
+{#            /*判断上次是否勾选记住密码和自动登录*/#}
+{#            var check1s = localStorage.getItem("check1");#}
+{#            var check2s = localStorage.getItem("check2");#}
+{#            var oldName = localStorage.getItem("userName");#}
+{#            var oldPass = localStorage.getItem("passWord");#}
+{#            if (check1s == "true") {#}
+{#                $("#login-username").val(oldName);#}
+{#                $("#login-password").val(oldPass);#}
+{#                $("#check1").prop('checked', true);#}
+{#            } else {#}
+{#                $("#login-username").val('');#}
+{#                $("#login-password").val('');#}
+{#                $("#check1").prop('checked', false);#}
+{#            }#}
+{#            if (check2s == "true") {#}
+{#                $("#check2").prop('checked', true);#}
+{#                $("#loginFrom").submit();#}
+{#                //location="https://www.baidu.com?userName="+oldName+"&passWord="+oldPass;//添加退出当前账号功能#}
+{#            } else {#}
+{#                $("#check2").prop('checked', false);#}
+{#            }#}
+{#            /*拿到刚刚注册的账号*/#}
+{#            /*if(localStorage.getItem("name")!=null){#}
+{#                $("#login-username").val(localStorage.getItem("name"));#}
+{#            }*/#}
+{#            /*登录*/#}
+{#            $("#login").click(function () {#}
+{#                var userName = $("#login-username").val();#}
+{#                var passWord = $("#login-password").val();#}
+{#                /*获取当前输入的账号密码*/#}
+{#                localStorage.setItem("userName", userName)#}
+{#                localStorage.setItem("passWord", passWord)#}
+{#                /*获取记住密码  自动登录的 checkbox的值*/#}
+{#                var check1 = $("#check1").prop('checked');#}
+{#                var check2 = $('#check2').prop('checked');#}
+{#                localStorage.setItem("check1", check1);#}
+{#                localStorage.setItem("check2", check2);#}
+{#            })#}
+{#    </script>#}
+</body>
+</html>

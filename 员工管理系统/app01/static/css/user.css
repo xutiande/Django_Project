@@ -1,0 +1,25 @@
+.form-input {
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+.form-control {
+    width: 514px;
+
+}
+
+.col-sm-10 select {
+    width: 80px;
+    text-align: center;
+}
+
+.col-sm-10 select:after {
+
+}
+
+.col-sm-10 {
+    width: 54%;
+}

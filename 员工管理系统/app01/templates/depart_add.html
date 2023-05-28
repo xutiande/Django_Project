@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}部门添加{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/add.css' %}">
+</head>
+
+<body>
+{% block div %}
+
+       <div class="container" style="border: 3px solid #F4F4F4;margin-top: 15px;border-radius: 13px">
+        <table class="table caption-top">
+            <div class="div-svg" style="border-radius: 13px">
+                <h5 style="    font-size: 16px;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 10px;"><b>新建</b>靓号</h5>
+            </div>
+            <form method="post" class="form-horizontal" novalidate>
+                {% csrf_token %}
+                <div class="form-group">
+                <label class="col-sm-2 control-label">标题</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="请输入标题" name="title"
+                           style="width: 600px;">
+                </div>
+
+
+    </div>
+    <button type="submit" class="btn btn-primary btn-address">提交</button>
+
+    </form>
+    </table>
+    </div>
+
+
+{% endblock %}
+</body>
+</html>

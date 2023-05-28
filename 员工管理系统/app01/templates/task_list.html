@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>login</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+
+</head>
+<body>
+{% block div %}
+
+    <div class="out-box">
+        <div class="container">
+            <div style="">
+                <a href="/ajax/study/" class="btn btn-primary">ajax学习</a>
+
+                <table class="table caption-top">
+                    <div class="div-svg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-card-list" viewBox="0 0 16 16">
+                            <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+                            <path d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zM4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"/>
+                        </svg>
+                        任务列表
+                    </div>
+                    <form id='formAdd' class="form-horizontal" novalidate>
+                        <div class="clearfix">
+                            {% for field in form %}
+                                <div class="form-group">
+                                    <div class="form-input">
+                                        <label class="col-sm-2 control-label">{{ field.label }}</label>
+                                        <div class="col-sm-10" style="position: relative">
+                                            {{ field }}
+                                            <span class="errors-msg"
+                                                  style="color: red;font-weight:bold;position: absolute;top: 7px;right: -88px;"></span>
+                                        </div>
+                                        <span style="color: #C00000;display: inline-block;width: 200px">{{ field.errors }}</span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <a id="formBtn" type="submit" class="btn btn-primary btn-address">提交</a>
+                        </div>
+                    </form>
+                    <thead>
+
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">级别</th>
+                        <th scope="col">标题</th>
+                        <th scope="col">详细详细</th>
+                        <th scope="col">管理员</th>
+                        <th scope="col">操作</th>
+                    </tr>
+                    </thead>
+                    {% for querysets in queryset %}
+                        <tbody>
+                        <tr>
+                            <th>{{ querysets.id }}</th>
+                            <td>{{ querysets.get_level_display }}</td>
+                            <td>{{ querysets.title }}</td>
+                            <td>{{ querysets.detail }}</td>
+                            <td>{{ querysets.user }}</td>
+                            <td>
+                                <a href="/depart/{{ querysets.id }}/edit/" class="btn btn-primary btn-xs">编辑</a>
+                                <a href="/depart/delete/?nid={{ querysets.id }}" class="btn btn-danger btn-xs">删除</a>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'jquery/jquery.3.6.min.js' %}"></script>
+    <script type="text/javascript">
+        $(function () {
+            {#页面加载完成后代码自动执行#}
+            btnFormBtnEvent();
+        })
+
+        function btnFormBtnEvent() {
+
+            {#添加点击事件函数#}
+            $("#formBtn").click(function () {
+                {#清空错误提示词#}
+                $(".errors-msg").empty();
+                $.ajax({
+                    url: '/task/add/',
+                    type: 'post',
+                    data: $("#formAdd").serialize(),
+                    dataType: "JSON",
+                    success: function (res) {
+                        if (res.status) {
+                            alert("登录成功");
+                            location.reload();  //页面刷新
+                        } else {
+                            {#循环#}
+                            $.each(res.errors, function (name, data) {
+                                {#console.log(name,data)#}
+                                {#将数据传到id为id_+name(循环后每个字段名拼接)的下一个标签中加入文本为data【0】#}
+                                $("#id_" + name).next().text(data[0]);
+                            })
+                        }
+
+                    }
+                })
+            })
+
+        }
+    </script>
+{% endblock %}
+</body>
+</html>

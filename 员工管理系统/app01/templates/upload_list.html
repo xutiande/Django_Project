@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}数据 统计{% endblock %}</title>
+</head>
+<body>
+{% block div %}
+
+    <div class="out-box">
+        <div class="container">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="text" name="username">
+                <input type="file" name="avatar">
+                <input type="submit">
+            </form>
+
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script src="{% static 'jquery/jquery.3.6.min.js' %}"></script>
+    <script src="{% static 'js/echarts.js' %}"></script>
+    <script type="text/javascript">
+    </script>
+{% endblock %}
+</body>
+</html>
